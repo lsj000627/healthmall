@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>상품 목록</title>
+</head>
+<body>
+<h2>상품 목록</h2>
+<ul>
+    <li th:each="p : ${products}">
+        [[${p.id}]] - [[${p.name}]] (₩[[${p.price}]]) - [[${p.category}]])
+    </li>
+</ul>
+</body>
+</html>

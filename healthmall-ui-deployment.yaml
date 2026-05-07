@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: healthmall-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: healthmall-ui
+  template:
+    metadata:
+      labels:
+        app: healthmall-ui
+    spec:
+      containers:
+        - name: healthmall-ui
+          image: lsj000627/healthmall-ui:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "http://223.130.162.28:30908/products"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "rootpassword"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "64m"
+            limits:
+              memory: "256Mi"
+              cpu: "256m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: healthmall-ui-service
+spec:
+  selector:
+    app: healthmall-ui
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30610
+  type: NodePort

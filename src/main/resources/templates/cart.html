@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BURNITUP | 장바구니</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            background-color: #020200;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            color: #ff3c00;
+            margin: 50px 0 20px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .cart-table {
+            margin: 0 auto 40px;
+            width: 95%;
+            border-collapse: collapse;
+            background-color: #121212;
+            border: 1px solid #ff3c00;
+        }
+
+        .cart-table th, .cart-table td {
+            padding: 12px;
+            border: 1px solid #ff3c00;
+            text-align: center;
+        }
+
+        .cart-table thead {
+            background-color: #ffcccb;
+            color: black;
+        }
+
+        .form-input {
+            background-color: #1e1e1e;
+            border: 1px solid #ff3c00;
+            padding: 6px;
+            color: white;
+            width: 130px;
+            margin-right: 8px;
+        }
+
+        .btn {
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        .btn-orange {
+            background-color: #ff3c00;
+            color: white;
+        }
+
+        .btn-red {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .action-form, .add-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ✅ 상단바 삽입 -->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<!-- 장바구니 목록 -->
+<h2>장바구니 목록</h2>
+
+<table class="cart-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>사용자 ID</th>
+        <th>상품 ID</th>
+        <th>수량</th>
+        <th>삭제</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${cartItems}">
+        <td th:text="${item.id}">1</td>
+        <td th:text="${item.userId}">1</td>
+        <td th:text="${item.productId}">101</td>
+        <td th:text="${item.quantity}">2</td>
+        <td>
+            <form th:action="@{'/cart/delete/' + ${item.id}}" method="post">
+                <input type="hidden" name="userId" th:value="${item.userId}" />
+                <button type="submit" class="btn btn-red">삭제</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- 상품 추가 -->
+<h2>장바구니에 상품 추가</h2>
+<form th:action="@{/cart/add}" method="post" class="add-form">
+    <input type="hidden" name="userId" th:value="${userId}" />
+    <input type="text" name="productId" placeholder="상품 ID" class="form-input" required />
+    <input type="number" name="quantity" placeholder="수량" class="form-input" required />
+    <button type="submit" class="btn btn-orange">추가</button>
+</form>
+
+<!-- ✅ 하단 푸터 -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

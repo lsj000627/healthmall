@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BURNITUP | Official Online Store</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+
+        .container {
+            padding: 80px 20px;
+        }
+
+        .logo {
+            width: 400px;
+            height: auto;
+            display: block;
+            margin: 0 auto 40px;
+        }
+
+        .nav a {
+            display: inline-block;
+            padding: 12px 28px;
+            border: 2px solid #ff3c00;
+            border-radius: 8px;
+            background-color: transparent;
+            color: #ff3c00;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 18px;
+            transition: all 0.2s ease;
+        }
+
+        .nav a:hover {
+            background-color: #ff3c00;
+            color: black;
+        }
+
+        .footer-team {
+            margin-top: 360px;
+            padding: 20px 0;
+            border-top: 1px solid #333;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .footer-team span {
+            display: block;
+            margin: 6px 0;
+        }
+
+        .footer-team b {
+            color: #fff;
+        }
+
+        .footer-copy {
+            text-align: center;
+            padding: 16px;
+            font-size: 13px;
+            color: gray;
+            background-color: #101010;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="/images/title.jpg" alt="Burn It Up" class="logo">
+
+        <div class="nav">
+            <a href="/products">PRODUCTS</a>
+        </div>
+
+        <div class="footer-team">
+            <span><b>경영학과 2020310021 이승재</b></span>
+            <span><b>경영학과 2020312037 허 진</b></span>
+        </div>
+
+        <div class="footer-copy">
+            &copy; 2025 BURNITUP. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>

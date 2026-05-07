@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인 | BURNITUP</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      font-family: 'Arial', sans-serif;
+      color: white;
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 60px;
+      font-size: 22px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .login-container {
+      background-color: #111;
+      border: 1px solid #333;
+      padding: 30px 24px;
+      border-radius: 10px;
+      width: 320px;
+      margin: 60px auto;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .login-container input[type="email"],
+    .login-container input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      background-color: #222;
+      color: white;
+    }
+
+    .login-container input::placeholder {
+      color: #aaa;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 10px;
+      background-color: #ff3c00;
+      border: none;
+      color: white;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .login-container button:hover {
+      background-color: #e64500;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ✅ 상단바 프래그먼트 -->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<!-- ✅ 제목 -->
+<h2>로그인</h2>
+
+<!-- ✅ 로그인 입력 박스 -->
+<div class="login-container">
+  <input type="email" id="email" placeholder="이메일" required />
+  <input type="password" id="password" placeholder="비밀번호" required />
+  <button onclick="handleLogin()">로그인</button>
+</div>
+
+<!-- ✅ 로그인 처리 스크립트 -->
+<script>
+  async function handleLogin() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try {
+      const res = await axios.post("http://223.130.153.51:30909/users/login", {
+        email,
+        password
+      });
+
+      if (res.data === "로그인 성공") {
+        localStorage.setItem("userEmail", email);
+
+        const idRes = await axios.get("http://223.130.153.51:30909/users/id", {
+          params: { email }
+        });
+        localStorage.setItem("userId", idRes.data);
+
+        alert("로그인 성공!");
+        window.location.href = "/products";
+      } else {
+        alert("로그인 실패");
+      }
+    } catch (err) {
+      alert("서버 오류: " + (err.response?.data?.message || err.message));
+      console.error(err);
+    }
+  }
+</script>
+
+</body>
+</html>

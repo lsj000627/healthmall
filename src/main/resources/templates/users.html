@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BURNITUP | 사용자 목록</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            background-color: #020200;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            color: #ff3c00;
+            margin: 50px 0 20px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .user-table {
+            margin: 0 auto 40px;
+            width: 95%;
+            border-collapse: collapse;
+            background-color: #121212;
+            border: 1px solid #ff3c00;
+        }
+
+        .user-table th, .user-table td {
+            padding: 12px;
+            border: 1px solid #ff3c00;
+            text-align: center;
+        }
+
+        .user-table thead {
+            background-color: #ffcccb;
+            color: black;
+        }
+
+        .form-input {
+            background-color: #1e1e1e;
+            border: 1px solid #ff3c00;
+            padding: 6px;
+            color: white;
+            width: 130px;
+            margin-right: 8px;
+        }
+
+        .btn {
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-orange {
+            background-color: #ff3c00;
+            color: white;
+        }
+
+        .btn-red {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .action-cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .update-form {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .new-user-form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 50px;
+        }
+
+        .new-user-form input,
+        .new-user-form button {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ✅ 상단 헤더 -->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<!-- 사용자 목록 -->
+<h2>사용자 목록</h2>
+<table class="user-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>이름</th>
+        <th>이메일</th>
+        <th>수정 / 삭제</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}">1</td>
+        <td th:text="${user.name}">홍길동</td>
+        <td th:text="${user.email}">test@example.com</td>
+        <td>
+            <div class="action-cell">
+                <!-- ✅ 수정 폼 -->
+                <form th:action="@{'/user-update'}" method="post" class="update-form">
+                    <input type="hidden" name="id" th:value="${user.id}" />
+                    <input type="text" name="name" th:value="${user.name}" class="form-input" />
+                    <input type="text" name="email" th:value="${user.email}" class="form-input" />
+                    <button type="submit" class="btn btn-orange">수정</button>
+                </form>
+
+                <!-- ✅ 삭제 폼 (inline-block) -->
+                <form th:action="@{'/user-delete/' + ${user.id}}" method="post"
+                      style="display: inline-block;"
+                      onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                    <button type="submit" class="btn btn-red">삭제</button>
+                </form>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- 사용자 등록 -->
+<h2>새 사용자 등록</h2>
+<form th:action="@{'/user-create'}" method="post" class="new-user-form">
+    <input type="text" name="name" placeholder="이름" class="form-input" required />
+    <input type="text" name="email" placeholder="이메일" class="form-input" required />
+    <input type="password" name="password" placeholder="비밀번호" class="form-input" required />
+    <button type="submit" class="btn btn-orange">등록</button>
+</form>
+
+<!-- ✅ 하단 푸터 -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BURNITUP | Official Online Store</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script th:src="@{/js/cart.js}"></script> <!-- ✅ 장바구니 JS 연동 -->
+    <style>
+        body {
+            background-color: #000;
+            color: white;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .title-orange {
+            font-size: 28px;
+            color: #ff3c00;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* ✅ 한 줄에 3개 */
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: #111;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 0 6px rgba(255,255,255,0.05);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .product-category {
+            margin-top: 10px;
+            color: #ff3c00;
+            font-size: 14px;
+        }
+
+        .product-name {
+            margin-top: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            color: white;
+        }
+
+        .product-price {
+            color: #ccc;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .order-controls input[type="number"] {
+            width: 50px;
+            padding: 5px;
+            text-align: center;
+            background-color: #222;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .btn-orange {
+            background-color: #ff3c00;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            margin-top: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-orange:hover {
+            background-color: #e64500;
+        }
+
+        .btn-outline {
+            border: 1px solid #ff3c00;
+            color: #ff3c00;
+            background: transparent;
+            padding: 6px 10px;
+            border-radius: 6px;
+            margin: 5px 5px 0 0;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-red {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .edit-delete-group {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .action-buttons {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .action-buttons a {
+            margin: 0 10px;
+        }
+
+        .slogan {
+            color: #ccc;
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ✅ 상단바 -->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container">
+    <div class="spacer-content">
+        <p class="slogan">Burn Your Limits, Fuel Your Body!</p>
+    </div>
+
+    <h1 class="title-orange">SHOP IN</h1>
+
+    <div class="product-grid">
+        <div class="product-card" th:each="product : ${products}">
+            <img th:src="@{'/images/' + ${product.image}}" alt="Product Image">
+            <div class="product-category" th:text="${product.category}">카테고리</div>
+            <div class="product-name" th:text="${product.name}">상품 이름</div>
+            <div class="product-price" th:text="'₩' + ${product.price}">가격</div>
+
+            <div class="order-controls">
+                <input type="number" th:id="'qty-' + ${product.id}" min="1" value="1" />
+                <button type="button" class="btn-orange"
+                        th:onclick="'addToCart(' + ${product.id} + ')'">
+                    🛒 담기
+                </button>
+            </div>
+
+            <div class="edit-delete-group">
+                <a th:href="@{'/products/edit/' + ${product.id}}" class="btn-outline">수정</a>
+                <a th:href="@{'/products/delete/' + ${product.id}}" class="btn-red">삭제</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <a href="/products/add" class="btn-orange">상품 등록</a>
+        <a href="/" class="btn-outline">메인으로</a>
+    </div>
+</div>
+
+<!-- ✅ 하단바 -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

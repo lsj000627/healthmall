@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 수정 | BURN IT UP</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- ✅ 상단 바 (프래그먼트) -->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container">
+    <h1 class="title-orange">상품 수정 폼</h1>
+
+    <form th:action="@{'/products/edit/' + ${product.id}}" method="post" th:object="${product}">
+        <!-- 이름 -->
+        <label for="name">이름:</label>
+        <input type="text" id="name" th:field="*{name}" required>
+
+        <!-- 가격 -->
+        <label for="price">가격:</label>
+        <input type="number" id="price" th:field="*{price}" required>
+
+        <!-- ✅ 카테고리 (수정 불가) -->
+        <label for="category">카테고리:</label>
+        <select id="category" disabled>
+            <option value="의류" th:selected="${product.category == '의류'}">의류</option>
+            <option value="보충제" th:selected="${product.category == '보충제'}">보충제</option>
+            <option value="용품" th:selected="${product.category == '용품'}">용품</option>
+            <option value="기타" th:selected="${product.category == '기타'}">기타</option>
+        </select>
+        <input type="hidden" name="category" th:value="${product.category}">
+
+        <!-- ✅ 이미지 선택 (수정 불가) -->
+        <label for="image">이미지 선택:</label>
+        <select id="image" disabled>
+            <option value="">-- 이미지 선택 --</option>
+            <option th:each="img : ${imageList}"
+                    th:value="${img}"
+                    th:text="${img}"
+                    th:selected="${img == product.image}">
+            </option>
+        </select>
+        <input type="hidden" name="image" th:value="${product.image}">
+
+        <!-- 이미지 미리보기 -->
+        <div>
+            <img id="preview" th:src="@{'/images/' + ${product.image}}" alt="미리보기" style="max-width: 100px; margin-top: 10px;">
+        </div>
+
+        <!-- ✅ JS 제거 (이미지 변경 불가하므로 미리보기 갱신 필요 없음) -->
+
+        <!-- 수정 버튼 -->
+        <button type="submit" class="btn-orange">수정 완료</button>
+    </form>
+
+    <div class="action-buttons">
+        <a href="/products" class="btn-outline">목록으로</a>
+    </div>
+</div>
+
+</body>
+</html>
